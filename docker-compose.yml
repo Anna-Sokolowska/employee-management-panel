@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  php:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: emp_php
+    volumes:
+      - .:/var/www
+    ports:
+      - "9000:9000"
+    restart: unless-stopped
+    networks:
+      - emp
+
+  nginx:
+    image: nginx:latest
+    container_name: emp_webserver
+    volumes:
+      - .:/var/www
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+    depends_on:
+      - php
+      - database
+    networks:
+      - emp
+
+  database:
+    image: mysql:latest
+    container_name: emp_database
+    volumes:
+      - db-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    restart: unless-stopped
+    tty: true
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_DATABASE: emp
+      MYSQL_ROOT_PASSWORD: password
+    networks:
+      - emp
+
+networks:
+  emp:
+
+volumes:
+  db-data:
+    driver: local
