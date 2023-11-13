@@ -15,9 +15,10 @@ class EmployeeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): View
     {
-        //
+        $employees = Employee::with(['company', 'foodPreference', 'phones'])->get();
+        return view('employees.index', ['employees' => $employees]);
     }
 
     /**
