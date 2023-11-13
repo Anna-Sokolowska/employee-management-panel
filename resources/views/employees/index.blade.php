@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+    <a class="btn btn-primary mb-4" href="{{ route('employees.create') }}" role="button">{{ __('Add') }}</a>
     <div class="table-responsive">
         <table class="table">
             <thead>
