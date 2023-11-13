@@ -2,34 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\CreateEmployee;
 use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
 use App\Models\Company;
 use App\Models\Employee;
 use App\Models\FoodPreference;
+use App\Services\EmployeeService;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class EmployeeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(Request $request): View
+
+    public function index(Request $request, EmployeeService $employeeService): View
     {
-        $column = $request->query('sort');
-        $direction = $request->query('direction');
+        $sort['column'] = $request->query('sort') ?: 'id';
+        $sort['direction'] = $request->query('direction') ?: 'asc';
 
-
-        $employees = Employee::orderBy($column, $direction)->with(['company', 'foodPreference', 'phones'])->paginate(5)->withQueryString();
+        $employees = $employeeService->getPaginatedListingData($sort, 10);
 
         return view('employees.index', ['employees' => $employees]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create(): View
     {
         $companies = Company::all();
@@ -38,48 +32,33 @@ class EmployeeController extends Controller
         return view('employees.create', ['companies' => $companies, 'foodPreferences' => $foodPreferences]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreEmployeeRequest $request, CreateEmployee $createEmployee)
+    public function store(StoreEmployeeRequest $request, EmployeeService $employeeService)
     {
         $validated = $request->validated();
 
-        $createEmployee->execute($validated);
+        $employeeService->createEmployeeWithPhones($validated);
 
         return redirect()->route('employees.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Employee $employee)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Employee $employee)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateEmployeeRequest $request, Employee $employee)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Employee $employee)
+    public function destroy(Employee $employee, EmployeeService $employeeService)
     {
-        $employee->delete();
+        $employeeService->delete($employee);
 
         return redirect()->route('employees.index');
     }
