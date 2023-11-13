@@ -30,21 +30,21 @@
         <table class="table">
             <thead>
             <tr>
-                <th scope="col" class="w-5">#</th>
-                <th scope="col" class="w-10">{{ __('First Name') }}</th>
-                <th scope="col" class="w-10">{{ __('Last Name') }}</th>
-                <th scope="col" class="w-10">{{ __('Email') }}</th>
-                <th scope="col" class="w-10">{{ __('Company') }}</th>
-                <th scope="col" class="w-15">{{ __('Food Preference') }}</th>
-                <th scope="col" class="w-20">{{ __('Phones') }}</th>
-                <th scope="col" class="w-10"></th>
+                <th scope="col" class="col">#</th>
+                <th scope="col" class="col-1">{{ __('First Name') }}</th>
+                <th scope="col" class="col-1">{{ __('Last Name') }}</th>
+                <th scope="col" class="col-2">{{ __('Email') }}</th>
+                <th scope="col" class="col-2">{{ __('Company') }}</th>
+                <th scope="col" class="col-2">{{ __('Food Preference') }}</th>
+                <th scope="col" class="col-2">{{ __('Phones') }}</th>
+                <th scope="col" class="col-2"></th>
             </tr>
             </thead>
 
             <tbody class="table-group-divider">
             @foreach($employees as $employee)
                 <tr>
-                    <th scope="row">{{ $loop->iteration }}</th>
+                    <th scope="row">{{ $employees->firstItem()+($loop->index) }}</th>
                     <td>{{ $employee->first_name }}</td>
                     <td>{{ $employee->last_name }}</td>
                     <td>{{ $employee->email }}</td>
