@@ -30,7 +30,7 @@
             <label for="inputFoodPreference" class="form-label">{{ __('Food preferences') }}</label>
             <select id="inputFoodPreference" class="form-select" name="food_preference_id">
                 @foreach ($foodPreferences as $foodPreference)
-                    <option value="{{ $foodPreference->id }}" @selected(old('food_preference_id') == $company->id)>{{ $foodPreference->name }}</option>
+                    <option value="{{ $foodPreference->id }}" @selected(old('food_preference_id') == $foodPreference->id)>{{ $foodPreference->name }}</option>
                 @endforeach
             </select>
         </div>
