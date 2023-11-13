@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateEmployeeRequest;
 use App\Models\Company;
 use App\Models\Employee;
 use App\Models\FoodPreference;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class EmployeeController extends Controller
@@ -15,9 +16,14 @@ class EmployeeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): View
+    public function index(Request $request): View
     {
-        $employees = Employee::with(['company', 'foodPreference', 'phones'])->paginate(5);
+        $column = $request->query('sort');
+        $direction = $request->query('direction');
+
+
+        $employees = Employee::orderBy($column, $direction)->with(['company', 'foodPreference', 'phones'])->paginate(5)->withQueryString();
+
         return view('employees.index', ['employees' => $employees]);
     }
 
