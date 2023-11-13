@@ -12,6 +12,14 @@ class Employee extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $fillable = [
+        'first_name',
+        'last_name',
+        'company_id',
+        'email',
+        'food_preference_id',
+    ];
+
     public function phones(): HasMany
     {
         return $this->hasMany(PhoneNumber::class);
