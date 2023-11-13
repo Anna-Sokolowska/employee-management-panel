@@ -19,7 +19,7 @@
             </ul>
         </div>
         <div>
-            <form class="d-flex" role="search" ac>
+            <form class="d-flex" role="search">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
@@ -52,13 +52,18 @@
                     <td>{{ $employee->foodPreference->name }}</td>
                     <td>{{ $employee->phones->pluck('phone_number')->implode(', ') }}</td>
                     <td>
-                        <form method="POST" action="{{ route('employees.destroy', $employee) }}">
-                            @csrf
-                            @method('DELETE')
-                            <div class="form-group">
-                                <input type="submit" class="btn btn-danger" value="{{ __('Delete') }}">
+                        <div class="row g-3">
+                            <div class="col">
+                                <a class="btn btn-primary" href="{{ route('employees.edit', $employee) }}" role="button">{{ __('Edit') }}</a>
                             </div>
-                        </form>
+                            <form class="col" method="POST" action="{{ route('employees.destroy', $employee) }}">
+                                @csrf
+                                @method('DELETE')
+                                <div class="form-group">
+                                    <input type="submit" class="btn btn-danger" value="{{ __('Delete') }}">
+                                </div>
+                            </form>
+                        </div>
                     </td>
                 </tr>
             @endforeach
