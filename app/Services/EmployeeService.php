@@ -16,6 +16,7 @@ class EmployeeService
 
         return $this->paginate($EmployeeBuilderWithCollections, $paginationItems);
     }
+
     public function sort(Builder $builder, $column, $direction): Builder
     {
         return $builder->orderBy($column, $direction);
@@ -30,11 +31,13 @@ class EmployeeService
     {
         return $builder->paginate($items)->withQueryString();
     }
+
     public function createEmployeeWithPhones(array $data): void
     {
         $employee = $this->createEmployee($data);
         $this->createEmployeePhones($employee, $data['phones']);
     }
+
     public function createEmployee(array $data): Employee
     {
         return Employee::create($data);
@@ -43,11 +46,13 @@ class EmployeeService
     public function createEmployeePhones(Employee $employee, array $phones): void
     {
         $data = [];
-        foreach ($phones as $phone)
+        foreach ($phones as $phone) {
             $data = ['phone_number' => $phone];
+        }
 
         $employee->phones()->createMany([$data]);
     }
+
     public function delete(Employee $employee): void
     {
         $employee->delete();

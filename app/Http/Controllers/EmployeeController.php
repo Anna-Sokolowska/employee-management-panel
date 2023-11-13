@@ -13,7 +13,6 @@ use Illuminate\View\View;
 
 class EmployeeController extends Controller
 {
-
     public function index(Request $request, EmployeeService $employeeService): View
     {
         $sort['column'] = $request->query('sort') ?: 'id';
