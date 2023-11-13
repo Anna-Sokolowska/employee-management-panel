@@ -12,7 +12,7 @@ class ExampleTest extends TestCase
      */
     public function test_the_application_redirect(): void
     {
-        $response = $this->get('/employees');
+        $response = $this->get('/');
 
         $response->assertStatus(302);
     }
