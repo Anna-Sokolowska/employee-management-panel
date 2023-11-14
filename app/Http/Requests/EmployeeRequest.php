@@ -25,7 +25,7 @@ class EmployeeRequest extends FormRequest
             'first_name' => 'required|max:255',
             'last_name' => 'required|max:255',
             'company_id' => 'required|integer|exists:companies,id',
-            'email' => 'required|email|unique:employees|max:255',
+            'email' => 'required|email|unique:employees,email,'.$this->employee?->id.'|max:255',
             'food_preference_id' => 'required|integer|exists:food_preferences,id',
             'phones' => 'array',
             'phones.*' => 'string|regex:/^([0-9\s\-\+\(\)]*)$/|min:9',
