@@ -1,18 +1,20 @@
 @extends('layouts.app')
 
 @section('content')
-    <form class="row g-3" method="POST" action="{{ route('employees.store') }}">
+    <form class="row g-3" method="POST" action="{{ route('employees.update', $employee) }}">
         @csrf
+        @method('PUT')
         <div class="col-md-6">
             <label for="inputFirstName" class="form-label">{{ __('First name') }}</label>
             <input type="text" class="form-control" id="inputFirstName" name="first_name" value="{{ $employee->first_name }}">
-            @error('title')
-            <div class="alert alert-danger">{{ $message }}</div>
-            @enderror
         </div>
         <div class="col-md-6">
             <label for="inputLastName" class="form-label">{{ __('Last name') }}</label>
             <input type="text" class="form-control" id="inputLastName" name="last_name" value="{{ $employee->last_name }}">
+        </div>
+        <div class="col-12">
+            <label for="inputEmail" class="form-label">{{ __('Email') }}</label>
+            <input type="email" class="form-control" id="inputEmail" name="email" value="{{ $employee->email }}">
         </div>
         <div class="col-12">
             <label for="inputCompany" class="form-label">{{ __('Company') }}</label>
