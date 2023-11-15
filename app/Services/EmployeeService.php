@@ -2,15 +2,28 @@
 
 namespace App\Services;
 
+use App\Models\Company;
 use App\Models\Employee;
+use App\Models\FoodPreference;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class EmployeeService
 {
-    public function getPaginatedListingData(array $sort, $paginationItems): LengthAwarePaginator
+    public function __construct(
+        public string $column = 'id',
+        public string $direction = 'asc'
+    ) {}
+
+    public function setSorting($column, $direction): void
     {
-        $EmployeeBuilder = $this->sort(Employee::query(), $sort['column'], $sort['direction']);
+        $this->column = $column;
+        $this->direction = $direction;
+    }
+
+    public function getPaginatedListingData($paginationItems): LengthAwarePaginator
+    {
+        $EmployeeBuilder = $this->sort(Employee::query(), $this->column, $this->direction);
 
         $EmployeeBuilderWithCollections = $this->addCollections($EmployeeBuilder);
 
@@ -78,5 +91,13 @@ class EmployeeService
     public function delete(Employee $employee): void
     {
         $employee->delete();
+    }
+
+    public function getAllModelsWhichEmployeeHas(): array
+    {
+        $companies = Company::all();
+        $foodPreferences = FoodPreference::all();
+
+        return compact('companies', 'foodPreferences');
     }
 }

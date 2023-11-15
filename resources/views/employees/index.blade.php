@@ -10,12 +10,12 @@
                 {{ __('Sort by') }}
             </button>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="{{ route('employees.index', ['sort' => 'first_name', 'direction'=> 'asc']) }}">{{ __('Sort by First Name (Ascending)') }}</a></li>
-                <li><a class="dropdown-item" href="{{ route('employees.index', ['sort' => 'first_name', 'direction'=> 'desc']) }}">{{ __('Sort by First Name (Descending)') }}</a></li>
-                <li><a class="dropdown-item" href="{{ route('employees.index', ['sort' => 'last_name', 'direction'=> 'asc']) }}">{{ __('Sort by Last Name (Ascending)') }}</a></li>
-                <li><a class="dropdown-item" href="{{ route('employees.index', ['sort' => 'last_name', 'direction'=> 'desc']) }}">{{ __('Sort by Last Name (Descending)') }}</a></li>
-                <li><a class="dropdown-item" href="{{ route('employees.index', ['sort' => 'email', 'direction'=> 'asc']) }}">{{ __('Sort by Email (Ascending)') }}</a></li>
-                <li><a class="dropdown-item" href="{{ route('employees.index', ['sort' => 'email', 'direction'=> 'desc']) }}">{{ __('Sort by Email (Descending)') }}</a></li>
+                <li><a class="dropdown-item" href="{{ route('employees.index', ['column' => 'first_name', 'direction'=> 'asc']) }}">{{ __('Sort by First Name (Ascending)') }}</a></li>
+                <li><a class="dropdown-item" href="{{ route('employees.index', ['column' => 'first_name', 'direction'=> 'desc']) }}">{{ __('Sort by First Name (Descending)') }}</a></li>
+                <li><a class="dropdown-item" href="{{ route('employees.index', ['column' => 'last_name', 'direction'=> 'asc']) }}">{{ __('Sort by Last Name (Ascending)') }}</a></li>
+                <li><a class="dropdown-item" href="{{ route('employees.index', ['column' => 'last_name', 'direction'=> 'desc']) }}">{{ __('Sort by Last Name (Descending)') }}</a></li>
+                <li><a class="dropdown-item" href="{{ route('employees.index', ['column' => 'email', 'direction'=> 'asc']) }}">{{ __('Sort by Email (Ascending)') }}</a></li>
+                <li><a class="dropdown-item" href="{{ route('employees.index', ['column' => 'email', 'direction'=> 'desc']) }}">{{ __('Sort by Email (Descending)') }}</a></li>
             </ul>
         </div>
         <div>
