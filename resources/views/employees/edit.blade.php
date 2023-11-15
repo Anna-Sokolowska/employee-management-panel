@@ -32,14 +32,12 @@
                 @endforeach
             </select>
         </div>
-        <div class="col-md-12">
-            <label for="inputPhone1" class="form-label">{{ __('Phones') }}</label>
-            <input type="text" class="form-control" id="inputPhone1"  name="phones[]" value="{{ old('phones.0') }}">
-        </div>
-        <div class="col-md-12">
-            <label for="inputPhone2" class="form-label">{{ __('Phones 2') }}</label>
-            <input type="text" class="form-control" id="inputPhone2"  name="phones[]" value="{{ old('phones.1') }}">
-        </div>
+        @foreach($employee->phones as $phone)
+            <div>
+                <label for="inputPhone1" class="form-label">{{ __('Phones') }}</label>
+                <input type="text" class="form-control" id="inputPhone1"  name="phones[]" value="{{ old('phones.'.$loop->index, $phone->phone_number) }}">
+            </div>
+        @endforeach
         <div class="col-12">
             <button type="submit" class="btn btn-primary">{{ __('Edit') }}</button>
         </div>
