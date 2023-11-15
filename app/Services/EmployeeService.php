@@ -45,12 +45,34 @@ class EmployeeService
 
     public function createEmployeePhones(Employee $employee, array $phones): void
     {
-        $data = [];
         foreach ($phones as $phone) {
-            $data = ['phone_number' => $phone];
+            $data[] = ['phone_number' => $phone];
         }
 
-        $employee->phones()->createMany([$data]);
+        $employee->phones()->createMany($data);
+    }
+
+    public function updateEmployeeWithPhones(Employee $employee, array $data): void
+    {
+        $employee = $this->updateEmployee($employee, $data);
+        $this->updateEmployeePhones($employee, $data['phones']);
+    }
+
+    public function updateEmployee(Employee $employee, array $data): Employee
+    {
+        $employee->update($data);
+        return $employee;
+    }
+
+    public function updateEmployeePhones(Employee $employee, array $phones): void
+    {
+        $employeePhones = $employee->phones()->select('id')->get();
+
+        foreach ($phones as $key => $phone) {
+            $data[] = ['id' => $employeePhones[$key]->id,'phone_number' => $phone, 'employee_id' =>$employee->id];
+        }
+
+        $employee->phones()->upsert($data, ['id'], ['phone_number', 'employee_id']);
     }
 
     public function delete(Employee $employee): void

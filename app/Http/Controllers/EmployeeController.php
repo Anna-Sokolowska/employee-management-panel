@@ -44,14 +44,16 @@ class EmployeeController extends Controller
         $companies = Company::all();
         $foodPreferences = FoodPreference::all();
 
-        return view('employees.edit', ['employee' => $employee, 'companies' => $companies, 'foodPreferences' => $foodPreferences]);
+        $phones = $employee->phones;
+
+        return view('employees.edit', ['employee' => $employee, 'companies' => $companies, 'foodPreferences' => $foodPreferences, 'phones' => $phones]);
     }
 
-    public function update(EmployeeRequest $request, Employee $employee)
+    public function update(EmployeeRequest $request, Employee $employee, EmployeeService $employeeService)
     {
         $validated = $request->validated();
 
-        $employee->update($validated);
+        $employeeService->updateEmployeeWithPhones($employee, $validated);
 
         return redirect()->route('employees.edit', $employee);
     }
