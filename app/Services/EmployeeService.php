@@ -15,7 +15,7 @@ class EmployeeService
         public string $direction = 'asc'
     ) {}
 
-    public function setSorting($column, $direction): void
+    public function setSortingParameters($column, $direction): void
     {
         $this->column = $column;
         $this->direction = $direction;
@@ -23,16 +23,16 @@ class EmployeeService
 
     public function getPaginatedListingData($paginationItems): LengthAwarePaginator
     {
-        $EmployeeBuilder = $this->sort(Employee::query(), $this->column, $this->direction);
+        $EmployeeBuilder = $this->sort(Employee::query());
 
         $EmployeeBuilderWithCollections = $this->addCollections($EmployeeBuilder);
 
         return $this->paginate($EmployeeBuilderWithCollections, $paginationItems);
     }
 
-    public function sort(Builder $builder, $column, $direction): Builder
+    public function sort(Builder $builder): Builder
     {
-        return $builder->orderBy($column, $direction);
+        return $builder->orderBy($this->column, $this->direction);
     }
 
     public function addCollections(Builder $builder): Builder

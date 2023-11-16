@@ -18,14 +18,14 @@ class EmployeeController extends Controller
 
     public function index(Request $request): View
     {
-        $column = $request->query('column') ?: 'id';
-        $direction = $request->query('direction') ?: 'asc';
+        $column = $request->query('column', 'id');
+        $direction = $request->query('direction', 'asc');
 
-        $this->employeeService->setSorting($column, $direction);
+        $this->employeeService->setSortingParameters($column, $direction);
 
         $employees = $this->employeeService->getPaginatedListingData(10);
 
-        return view('employees.index', ['employees' => $employees]);
+        return view('employees.index', compact('employees'));
     }
 
     public function create(EmployeeService $employeeService): View
