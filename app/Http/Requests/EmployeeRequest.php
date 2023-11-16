@@ -31,4 +31,11 @@ class EmployeeRequest extends FormRequest
             'phones.*' => 'string|regex:/^([0-9\s\-\+\(\)]*)$/|min:9',
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'phones.*' => 'Invalid phone number',
+        ];
+    }
 }

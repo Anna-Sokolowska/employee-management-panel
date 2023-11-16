@@ -1,7 +1,9 @@
 @extends('layouts.app')
-
+@section('title')
+    Update Employee
+@endsection
 @section('content')
-    <form class="row g-3" method="POST" action="{{ route('employees.update', $employee) }}">
+    <form class="row g-3 needs-validation" method="POST" action="{{ route('employees.update', $employee) }}" novalidate>
         @csrf
         @method('PUT')
         <div class="col-md-6">
@@ -38,18 +40,9 @@
                 <input type="text" class="form-control" id="inputPhone1"  name="phones[]" value="{{ old('phones.'.$loop->index, $phone->phone_number) }}">
             </div>
         @endforeach
-        <div class="col-12">
+        <div class="col-12 d-flex justify-content-end gap-2">
             <button type="submit" class="btn btn-primary">{{ __('Edit') }}</button>
+            <a href="{{ route('employees.index') }}" class="btn btn-secondary">{{ __('Back') }}</a>
         </div>
-
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
     </form>
 @endsection
