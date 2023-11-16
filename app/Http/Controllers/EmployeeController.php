@@ -12,55 +12,59 @@ use Illuminate\View\View;
 
 class EmployeeController extends Controller
 {
-    public function index(Request $request, EmployeeService $employeeService): View
+    public function __construct(
+        public EmployeeService $employeeService
+    ) {}
+
+    public function index(Request $request): View
     {
-        $sort['column'] = $request->query('sort') ?: 'id';
-        $sort['direction'] = $request->query('direction') ?: 'asc';
+        $column = $request->query('column', 'id');
+        $direction = $request->query('direction', 'asc');
 
-        $employees = $employeeService->getPaginatedListingData($sort, 10);
+        $this->employeeService->setSortingParameters($column, $direction);
 
-        return view('employees.index', ['employees' => $employees]);
+        $employees = $this->employeeService->getPaginatedListingData(10);
+
+        return view('employees.index', compact('employees'));
     }
 
-    public function create(): View
+    public function create(EmployeeService $employeeService): View
     {
-        $companies = Company::all();
-        $foodPreferences = FoodPreference::all();
+        $data = $employeeService->getAllModelsWhichEmployeeHas();
 
-        return view('employees.create', ['companies' => $companies, 'foodPreferences' => $foodPreferences]);
+        return view('employees.create', [], $data);
     }
 
-    public function store(EmployeeRequest $request, EmployeeService $employeeService)
+    public function store(EmployeeRequest $request)
     {
         $validated = $request->validated();
 
-        $employeeService->createEmployeeWithPhones($validated);
+        $this->employeeService->createEmployeeWithPhones($validated);
 
         return redirect()->route('employees.index');
     }
 
     public function edit(Employee $employee)
     {
-        $companies = Company::all();
-        $foodPreferences = FoodPreference::all();
+        $data = $this->employeeService->getAllModelsWhichEmployeeHas();
 
         $phones = $employee->phones;
 
-        return view('employees.edit', ['employee' => $employee, 'companies' => $companies, 'foodPreferences' => $foodPreferences, 'phones' => $phones]);
+        return view('employees.edit', compact('employee', 'phones'), $data);
     }
 
-    public function update(EmployeeRequest $request, Employee $employee, EmployeeService $employeeService)
+    public function update(EmployeeRequest $request, Employee $employee)
     {
         $validated = $request->validated();
 
-        $employeeService->updateEmployeeWithPhones($employee, $validated);
+        $this->employeeService->updateEmployeeWithPhones($employee, $validated);
 
         return redirect()->route('employees.edit', $employee);
     }
 
-    public function destroy(Employee $employee, EmployeeService $employeeService)
+    public function destroy(Employee $employee)
     {
-        $employeeService->delete($employee);
+        $this->employeeService->delete($employee);
 
         return redirect()->route('employees.index');
     }
