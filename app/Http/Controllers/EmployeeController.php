@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\EmployeeRequest;
-use App\Models\Company;
 use App\Models\Employee;
-use App\Models\FoodPreference;
 use App\Services\EmployeeService;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -20,12 +18,15 @@ class EmployeeController extends Controller
     {
         $column = $request->query('column', 'id');
         $direction = $request->query('direction', 'asc');
+        $search = $request->query('search');
 
         $this->employeeService->setSortingParameters($column, $direction);
+//        dd($request->cookie('filterCompaniesId'));
+        $employees = $this->employeeService->getPaginatedListingData(10, json_decode($request->cookie('filterCompaniesId')), $search);
 
-        $employees = $this->employeeService->getPaginatedListingData(10);
+        $companies = $this->employeeService->getAllCompanies();
 
-        return view('employees.index', compact('employees'));
+        return view('employees.index', compact('employees', 'companies'));
     }
 
     public function create(EmployeeService $employeeService): View
