@@ -21,7 +21,7 @@ class EmployeeController extends Controller
         $search = $request->query('search');
 
         $this->employeeService->setSortingParameters($column, $direction);
-//        dd($request->cookie('filterCompaniesId'));
+
         $employees = $this->employeeService->getPaginatedListingData(10, json_decode($request->cookie('filterCompaniesId')), $search);
 
         $companies = $this->employeeService->getAllCompanies();

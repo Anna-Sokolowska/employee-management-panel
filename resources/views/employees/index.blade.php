@@ -4,8 +4,8 @@
     <div class="d-flex justify-content-end">
         <a class="btn btn-primary mb-4" href="{{ route('employees.create') }}" role="button">{{ __('Add') }}</a>
     </div>
-    <div class="d-flex justify-content-end">
-        <div class="dropdown mx-sm-4">
+    <div class="d-md-flex justify-content-end">
+        <div class="dropdown mx-md-4 mb-3">
             <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                 {{ __('Sort by') }}
             </button>
@@ -18,39 +18,33 @@
                 <li><a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['column' => 'email', 'direction'=> 'desc', 'page' => 1]) }}">{{ __('Sort by Email (Descending)') }}</a></li>
             </ul>
         </div>
-        <div>
-            <form class="d-flex" role="search" method="GET" action="{{ url()->full() }}">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
-        </div>
-    </div>
-
-    <p class="d-inline-flex gap-1">
-        <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-            Link with href
-        </a>
-        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-            Button with data-bs-target
-        </button>
-    </p>
-    <div class="collapse position-absolute z-3" id="collapseExample">
-        <div class="card card-body">
-            <form method="POST" action="{{ route('employees.filter') }}">
-                @csrf
-                @foreach($companies as $company)
-                    <div class="input-group">
-                        <div class="input-group-text">
-                            <input class="form-check-input mt-0" type="checkbox" value="{{ $company->id }}" aria-label="" name="companies[]">
+        <div class="dropdown mx-md-4 mb-3">
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                {{ __('Filter') }}
+            </button>
+            <div class="dropdown-menu">
+                <form method="POST" action="{{ route('employees.filter') }}">
+                    @csrf
+                    @foreach($companies as $company)
+                        <div class="input-group">
+                            <div class="input-group-text">
+                                <input class="form-check-input mt-0" type="checkbox" value="{{ $company->id }}" @checked(old('companies'.$loop->index, in_array($company->id, json_decode(request()->cookie('filterCompaniesId')) ?: []))) aria-label="" name="companies[]">
+                            </div>
+                            <input type="text" class="form-control" aria-label="Text input with checkbox" value="{{ $company->name }}" disabled>
                         </div>
-                        <input type="text" class="form-control" aria-label="Text input with checkbox" value="{{ $company->name }}" disabled>
-                    </div>
-                @endforeach
+                    @endforeach
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+        <div class="mb-3">
+            <form class="d-flex" role="search" method="GET" action="{{ url()->full() }}">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search" value="{{ old('search', request()->query('search')) }}">
                 <button class="btn btn-outline-success" type="submit">Search</button>
-
             </form>
         </div>
     </div>
+
     <div class="row">
         <div class="table-responsive-xxl">
             <table class="table">
