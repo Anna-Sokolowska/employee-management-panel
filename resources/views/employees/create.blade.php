@@ -37,11 +37,11 @@
         </div>
         <div class="col-md-12">
             <label for="inputPhone1" class="form-label">{{ __('Phones') }}</label>
-            <input type="text" class="form-control" id="inputPhone1"  name="phones[]" value="{{ old('phones.0') }}">
+            <input type="text" class="form-control" id="inputPhone1"  name="phoneNumbers[]" value="{{ old('phoneNumbers.0') }}">
         </div>
         <div class="col-md-12">
             <label for="inputPhone2" class="form-label">{{ __('Phones 2') }}</label>
-            <input type="text" class="form-control" id="inputPhone2"  name="phones[]" value="{{ old('phones.1') }}">
+            <input type="text" class="form-control" id="inputPhone2"  name="phoneNumbers[]" value="{{ old('phoneNumbers.1') }}">
         </div>
         <div class="col-12 d-flex justify-content-end gap-2">
             <button type="submit" class="btn btn-primary">{{ __('Create') }}</button>

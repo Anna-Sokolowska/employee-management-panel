@@ -34,10 +34,10 @@
                 @endforeach
             </select>
         </div>
-        @foreach($employee->phones as $phone)
+        @foreach($employee->phoneNumbers as $phone)
             <div>
                 <label for="inputPhone1" class="form-label">{{ __('Phones') }}</label>
-                <input type="text" class="form-control" id="inputPhone1"  name="phones[]" value="{{ old('phones.'.$loop->index, $phone->phone_number) }}">
+                <input type="text" class="form-control" id="inputPhone1"  name="phoneNumbers[]" value="{{ old('phoneNumbers.'.$loop->index, $phone->phone_number) }}">
             </div>
         @endforeach
         <div class="col-12 d-flex justify-content-end gap-2">

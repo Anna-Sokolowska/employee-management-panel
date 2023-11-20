@@ -44,7 +44,7 @@ class EmployeeService
 
     public function addCollections(Builder $builder): Builder
     {
-        return $builder->with(['company', 'foodPreference', 'phones']);
+        return $builder->with(['company', 'foodPreference', 'phoneNumbers']);
     }
 
     public function paginate(Builder $builder, int $items): LengthAwarePaginator
@@ -55,7 +55,7 @@ class EmployeeService
     public function createEmployeeWithPhones(array $data): void
     {
         $employee = $this->createEmployee($data);
-        $this->createEmployeePhones($employee, $data['phones']);
+        $this->createEmployeePhones($employee, $data['phoneNumbers']);
     }
 
     public function createEmployee(array $data): Employee
@@ -69,7 +69,7 @@ class EmployeeService
             $data[] = ['phone_number' => $phone];
         }
 
-        $employee->phones()->createMany($data);
+        $employee->phoneNumbers()->createMany($data);
     }
 
     public function updateEmployeeWithPhones(Employee $employee, array $data): void
@@ -86,13 +86,13 @@ class EmployeeService
 
     public function updateEmployeePhones(Employee $employee, array $phones): void
     {
-        $employeePhones = $employee->phones()->select('id')->get();
+        $employeePhones = $employee->phoneNumbers()->select('id')->get();
 
         foreach ($phones as $key => $phone) {
             $data[] = ['id' => $employeePhones[$key]->id,'phone_number' => $phone, 'employee_id' =>$employee->id];
         }
 
-        $employee->phones()->upsert($data, ['id'], ['phone_number', 'employee_id']);
+        $employee->phoneNumbers()->upsert($data, ['id'], ['phone_number', 'employee_id']);
     }
 
     public function delete(Employee $employee): void
