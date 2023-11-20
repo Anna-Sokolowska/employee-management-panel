@@ -70,7 +70,7 @@
                         <td>{{ $employee->email }}</td>
                         <td>{{ $employee->company->name }}</td>
                         <td>{{ $employee->foodPreference->name }}</td>
-                        <td>{{ $employee->phones->pluck('phone_number')->implode(', ') }}</td>
+                        <td>{{ $employee->phoneNumbers->pluck('phone_number')->implode(', ') }}</td>
                         <td>
                             <div class="row g-3">
                                 <div class="col">

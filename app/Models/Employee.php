@@ -20,7 +20,7 @@ class Employee extends Model
         'food_preference_id',
     ];
 
-    public function phones(): HasMany
+    public function phoneNumbers(): HasMany
     {
         return $this->hasMany(PhoneNumber::class);
     }
