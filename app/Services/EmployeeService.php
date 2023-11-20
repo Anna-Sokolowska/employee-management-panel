@@ -6,6 +6,7 @@ use App\Models\Company;
 use App\Models\Employee;
 use App\Models\FoodPreference;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class EmployeeService
@@ -15,17 +16,23 @@ class EmployeeService
         public string $direction = 'asc'
     ) {}
 
-    public function setSortingParameters($column, $direction): void
+    public function setSortingParameters(string $column, string $direction): void
     {
         $this->column = $column;
         $this->direction = $direction;
     }
 
-    public function getPaginatedListingData($paginationItems): LengthAwarePaginator
+    public function getPaginatedListingData(int $paginationItems, ?array $cookie, ?string $search): LengthAwarePaginator
     {
-        $EmployeeBuilder = $this->sort(Employee::query());
+        $employeeBuilder = $this->sort(Employee::query());
 
-        $EmployeeBuilderWithCollections = $this->addCollections($EmployeeBuilder);
+        if($cookie)
+            $employeeBuilder = $this->filter($employeeBuilder, $cookie);
+
+        if($search)
+            $employeeBuilder = $this->search($employeeBuilder, $search);
+
+        $EmployeeBuilderWithCollections = $this->addCollections($employeeBuilder);
 
         return $this->paginate($EmployeeBuilderWithCollections, $paginationItems);
     }
@@ -95,9 +102,30 @@ class EmployeeService
 
     public function getAllModelsWhichEmployeeHas(): array
     {
-        $companies = Company::all();
-        $foodPreferences = FoodPreference::all();
+        $companies = $this->getAllCompanies();
+        $foodPreferences = $this->getAllFoodPreferences();
 
         return compact('companies', 'foodPreferences');
+    }
+
+    public function getAllCompanies(): Collection
+    {
+        return  Company::all();
+    }
+
+    public function getAllFoodPreferences(): Collection
+    {
+        return  FoodPreference::all();
+    }
+
+    public function filter(Builder $builder, array $companiesId): Builder
+    {
+        return  $builder->whereIn('company_id', $companiesId);
+    }
+    public function search(Builder $builder, string $search): Builder
+    {
+        return  $builder->where('first_name','LIKE', '%'.$search.'%')
+            ->orWhere('last_name','LIKE', '%'.$search.'%')
+            ->orWhere('email','LIKE', '%'.$search.'%');
     }
 }
